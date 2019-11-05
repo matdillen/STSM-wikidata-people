@@ -1,0 +1,514 @@
+---
+title: "Match collectors to Wikidata"
+author: "Mathias Dillen"
+date: "11/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval = FALSE)
+```
+
+## Packages
+
+```{r libs}
+library(tidyverse)
+library(jsonlite)
+```
+
+## Functions
+
+Query Wikidata, based on the WikidataQueryServiceR package functions.
+
+```{r queryWiki}
+querki <- function(query,h="text/csv") {
+  require(httr)
+  response <- httr::GET(url = "https://query.wikidata.org/sparql", 
+                        query = list(query = query),
+                        httr::add_headers(Accept = h),
+                        httr::user_agent("insert_your_wiki_name_here_please"))
+  return(httr::content(response,
+                       type=h,
+                       col_types = cols(.default = "c")))
+}
+```
+
+Convert logical vectors in a tibble to character vectors. This function should not be necessary anymore.
+
+```{r logicalToChar}
+tochar <- function(df) {
+  df2 = as_tibble(sapply(df,
+                         function(x) if(is.logical(x)) {
+                           return(as.character(x)) } 
+                         else {
+                           return(x)
+                         }
+  ))
+  return(df2)
+}
+```
+
+Match (a combination of) names to Wikidata item labels. This function requires `sub`, a list of wikidata item `id`s and `itemLabel`s. It tries to match names from `source`, a list of person records with first name `FNAME`, middle name(s) `MNAME` and last name `LNAME`. First and middle names are optional. It returns the matches as concatenated strings of `id`s and of `itemLabel`s separated by |.
+
+The function is used as part of the matching script. It also expects in `sub` variables for `sname`, the last word of the Wikidata item label, and for `init`, the initials of the item label. These variables are scripted below.
+
+```{r matchName}
+matchName <- function(sub,source) {
+  #sub is the list of wikidata items
+  #source is the list of collectors to match to those items
+  
+  #Try to fuzzy match a known last name into the last name of the Wiki label
+  yob = filter(sub,agrepl(source$LNAME[i],sname))
+  #Ensure they're of similar length (max 1 char longer)
+  yob = filter(yob,nchar(source$LNAME[i])>nchar(sname)-2)
+  len = dim(yob)[1]
+  
+  #Do extra fuzzy matching for first name
+  ##Fuzzy matching if no abbreviations used
+  ##Exact matching if abbreviated (with a period)
+  if (is.na(source$FNAME[i])==F) {
+    if (grepl(".",source$FNAME[i],fixed=T)==F) {
+      yob = filter(yob,agrepl(source$FNAME[i],itemLabel))
+      len = dim(yob)[1]
+    }
+    if (grepl(".",source$FNAME[i],fixed=T)) {
+      yob = filter(yob,grepl(gsub("\\.","",source$FNAME[i]),init))
+      len=dim(yob)[1]
+    }
+  }
+  
+  #Fuzzy matching with middle name only if multiple matches were found
+  if (len>1&is.na(source$MNAME[i])==F) {
+    yob = filter(yob,agrepl(source$MNAME[i],itemLabel))
+    len = dim(yob)[1]
+  }
+  return(c(len,
+           paste(yob$itemLabel,collapse="|"),
+           paste(yob$id,collapse="|")))
+}
+```
+
+## Query wikidata
+
+Retrieve results of SPARQL queries in a CSV format. Each query returns Wikidata item ids and certain other properties, including the English item label. All items in these queries need to be instances of `P31` human `Q5`. 
+
+# Initialize
+
+```{r startQuery}
+raw = list()
+iter = 1
+```
+
+
+# Entomologists of the World ID
+
+```{r entom}
+query <- 'SELECT DISTINCT ?item ?itemLabel ?entom_id ?orcid ?viaf ?isni ?yob ?yod ?fly ?wyb ?wye WHERE {
+  ?item wdt:P31 wd:Q5 .
+  ?item wdt:P5370 ?entom_id. #entomologists of the world .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" } 
+  OPTIONAL { ?item wdt:P496 ?orcid .}
+  OPTIONAL { ?item wdt:P214 ?viaf .}
+  OPTIONAL { ?item wdt:P213 ?isni .}
+  OPTIONAL { ?item wdt:P569 ?dob . BIND(YEAR(?dob) as ?yob) }
+	OPTIONAL { ?item wdt:P570 ?dod . BIND(YEAR(?dod) as ?yod) }
+	OPTIONAL { ?item wdt:P1317 ?fl . BIND(YEAR(?fl) as ?fly) }
+	OPTIONAL { ?item wdt:P2031 ?wpb . BIND(YEAR(?wpb) as ?wyb) }
+	OPTIONAL { ?item wdt:P2032 ?wpe . BIND(YEAR(?wpe) as ?wye) }
+}'
+raw[[iter]] = querki(query)
+iter = iter + 1
+```
+
+# BHL Creator ID
+
+```{r bhl}
+query <- 'SELECT DISTINCT ?item ?itemLabel ?bhl_id ?orcid ?viaf ?isni ?yob ?yod ?fly ?wyb ?wye WHERE {
+  ?item wdt:P31 wd:Q5 .
+  ?item wdt:P4081 ?bhl_id. #BHL creator .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" } 
+  OPTIONAL { ?item wdt:P496 ?orcid .}
+  OPTIONAL { ?item wdt:P214 ?viaf .}
+  OPTIONAL { ?item wdt:P213 ?isni .}
+  OPTIONAL { ?item wdt:P569 ?dob . BIND(YEAR(?dob) as ?yob) }
+	OPTIONAL { ?item wdt:P570 ?dod . BIND(YEAR(?dod) as ?yod) }
+	OPTIONAL { ?item wdt:P1317 ?fl . BIND(YEAR(?fl) as ?fly) }
+	OPTIONAL { ?item wdt:P2031 ?wpb . BIND(YEAR(?wpb) as ?wyb) }
+	OPTIONAL { ?item wdt:P2032 ?wpe . BIND(YEAR(?wpe) as ?wye) }
+}'
+raw[[iter]] = querki(query)
+iter = iter + 1
+```
+
+# Harvard index of botanists ID
+
+```{r harv}
+query <- 'SELECT DISTINCT ?item ?itemLabel ?harv_id ?orcid ?viaf ?isni ?yob ?yod ?fly ?wyb ?wye WHERE {
+  ?item wdt:P31 wd:Q5 .
+  ?item wdt:P6264 ?harv_id. #Harvard index of botanists .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" } 
+  OPTIONAL { ?item wdt:P496 ?orcid .}
+  OPTIONAL { ?item wdt:P214 ?viaf .}
+  OPTIONAL { ?item wdt:P213 ?isni .}
+  OPTIONAL { ?item wdt:P569 ?dob . BIND(YEAR(?dob) as ?yob) }
+	OPTIONAL { ?item wdt:P570 ?dod . BIND(YEAR(?dod) as ?yod) }
+	OPTIONAL { ?item wdt:P1317 ?fl . BIND(YEAR(?fl) as ?fly) }
+	OPTIONAL { ?item wdt:P2031 ?wpb . BIND(YEAR(?wpb) as ?wyb) }
+	OPTIONAL { ?item wdt:P2032 ?wpe . BIND(YEAR(?wpe) as ?wye) }
+}'
+raw[[iter]] = querki(query)
+iter = iter + 1
+```
+
+# Zoobank ID
+
+```{r zoo}
+query <- 'SELECT DISTINCT ?item ?itemLabel ?zoo_id ?orcid ?viaf ?isni ?yob ?yod ?fly ?wyb ?wye WHERE {
+  ?item wdt:P31 wd:Q5 .
+  ?item wdt:P2006 ?zoo_id. #zoobank .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" } 
+  OPTIONAL { ?item wdt:P496 ?orcid .}
+  OPTIONAL { ?item wdt:P214 ?viaf .}
+  OPTIONAL { ?item wdt:P213 ?isni .}
+  OPTIONAL { ?item wdt:P569 ?dob . BIND(YEAR(?dob) as ?yob) }
+	OPTIONAL { ?item wdt:P570 ?dod . BIND(YEAR(?dod) as ?yod) }
+	OPTIONAL { ?item wdt:P1317 ?fl . BIND(YEAR(?fl) as ?fly) }
+	OPTIONAL { ?item wdt:P2031 ?wpb . BIND(YEAR(?wpb) as ?wyb) }
+	OPTIONAL { ?item wdt:P2032 ?wpe . BIND(YEAR(?wpe) as ?wye) }
+}'
+raw[[iter]] = querki(query)
+iter = iter + 1
+```
+
+#IPNI ID
+
+```{r ipni}
+query <- 'SELECT DISTINCT ?item ?itemLabel ?ipni_id ?orcid ?viaf ?isni ?yob ?yod ?fly ?wyb ?wye WHERE {
+  ?item wdt:P31 wd:Q5 .
+  ?item wdt:P586 ?ipni_id. #ipni
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" } 
+  OPTIONAL { ?item wdt:P496 ?orcid .}
+  OPTIONAL { ?item wdt:P214 ?viaf .}
+  OPTIONAL { ?item wdt:P213 ?isni .}
+  OPTIONAL { ?item wdt:P569 ?dob . BIND(YEAR(?dob) as ?yob) }
+	OPTIONAL { ?item wdt:P570 ?dod . BIND(YEAR(?dod) as ?yod) }
+	OPTIONAL { ?item wdt:P1317 ?fl . BIND(YEAR(?fl) as ?fly) }
+	OPTIONAL { ?item wdt:P2031 ?wpb . BIND(YEAR(?wpb) as ?wyb) }
+	OPTIONAL { ?item wdt:P2032 ?wpe . BIND(YEAR(?wpe) as ?wye) }
+}'
+raw[[iter]] = querki(query)
+iter = iter + 1
+```
+
+# Wikispecies article
+
+```{r wsp}
+query <- 'SELECT DISTINCT ?item ?itemLabel ?article ?orcid ?viaf ?isni ?yob ?yod ?fly ?wyb ?wye WHERE {
+	?item wdt:P31 wd:Q5 .
+  ?article 	schema:about ?item ;
+			schema:isPartOf <https://species.wikimedia.org/> .
+	SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+	OPTIONAL { ?item wdt:P496 ?orcid .}
+  OPTIONAL { ?item wdt:P214 ?viaf .}
+  OPTIONAL { ?item wdt:P213 ?isni .}
+  OPTIONAL { ?item wdt:P569 ?dob . BIND(YEAR(?dob) as ?yob) }
+	OPTIONAL { ?item wdt:P570 ?dod . BIND(YEAR(?dod) as ?yod) }
+	OPTIONAL { ?item wdt:P1317 ?fl . BIND(YEAR(?fl) as ?fly) }
+	OPTIONAL { ?item wdt:P2031 ?wpb . BIND(YEAR(?wpb) as ?wyb) }
+	OPTIONAL { ?item wdt:P2032 ?wpe . BIND(YEAR(?wpe) as ?wye) }
+}'
+raw[[iter]] = querki(query)
+iter = iter + 1
+```
+
+# Join all results
+
+Join all results and filter on unique Wikidata ids. Some may be duplicated if they have multiple identifiers for the same property (e.g. multiple IPNI identifiers for a single person).
+
+```{r join}
+#fix column types, may not be needed anymore
+for (i in 1:length(raw)) {
+  raw[[i]] = tochar(raw[[i]])
+}
+
+#full join
+allb = full_join(raw[[1]],raw[[2]])
+if (length(raw)>2) {
+  for (i in 3:length(raw)) {
+    allb = full_join(allb,raw[[i]])
+  }
+}
+
+#unique items, add id
+allb.names = filter(allb,duplicated(item)==F)
+allb.names$id = gsub("http://www.wikidata.org/entity/",
+                     "",
+                     allb.names$item)
+```
+
+# Add the (presumed) surname and initials
+
+```{r allbX}
+#add surname (last word of label)
+allb.names$sname = gsub("^(.*[\\s])",
+                        "",
+                        allb.names$itemLabel,perl=T)
+
+#create initials for the wikidata item labels
+#also remove quotes
+allb.names$init = gsub("\'",
+                       "",
+                       allb.names$itemLabel,fixed=T)
+allb.names$init = gsub("\"",
+                       "",
+                       allb.names$init,fixed=T)
+allb.names$init = gsub("(?<!\\s).",
+                       "",
+                       allb.names$init,perl=T)
+allb.names$init = paste0(
+  substr(allb.names$itemLabel,1,1),
+  allb.names$init)
+```
+
+## Import list of collectors to match
+
+Example in this case used for the STSM is an export from the collector table of Meise Botanic Garden's collection management system, BG-Base.
+
+```{r bgbimp}
+bgb = read_tsv("data/COLLECTORS_28OCT19.TXT")
+```
+
+Extract year from the dates of birth/death and concatenate the full name based on FNAME, MNAME and LNAME (i.e. first, middle and last names).
+
+```{r bgbprep}
+#extract year
+for (i in 1:dim(bgb)[1]) {
+  bgb$date1[i] = substr(bgb$BIRTH_DT[i],
+                        nchar(bgb$BIRTH_DT[i])-3,
+                        nchar(bgb$BIRTH_DT[i]))
+  bgb$date2[i] = substr(bgb$DEATH_DT[i],
+                        nchar(bgb$DEATH_DT[i])-3,
+                        nchar(bgb$DEATH_DT[i]))
+}
+
+#compose fullname
+bgb$fullname = paste(bgb$FNAME,
+                     bgb$MNAME,
+                     bgb$LNAME)
+bgb$fullname = gsub("NA ",
+                    "",
+                    bgb$fullname)
+```
+
+Attach `mndate` and `mxdate` to indicate a range of dates when the person was alive as specimens were supposedly collected by them at that time (floruit date). If the range between these dates is greater than 100, it's considered unreliable and the dates are removed. Also attach `n`, the number of specimens linked to them.
+
+```{r dateX}
+exp = read_tsv("data/MeiseBG-specimens.tsv")
+bgb$n = NA
+bgb$mndate = NA
+bgb$mxdate = NA
+speccoll = count(exp,COLL_ID)
+for (i in 1:dim(bgb)[1]) {
+  k = speccoll[speccoll$COLL_ID==bgb$COLL_ID[i],]
+  if (is.na(bgb$date1[i])) {
+    dates = filter(exp,
+                   bgb$COLL_ID[i]==COLL_ID,
+                   is.na(COLL_DT)==F
+                   )$COLL_DT
+    if (length(dates)>0) {
+      bgb$mndate[i] = min(as.numeric(substr(dates,8,11)))
+      bgb$mxdate[i] = max(as.numeric(substr(dates,8,11)))
+    }
+  }
+  if (is.na(bgb$mndate[i])==F&
+      is.na(bgb$mxdate[i])==F) {
+    dur = bgb$mxdate[i] - bgb$mndate[i]
+    if (dur > 100) {
+      bgb$mndate[i] = NA
+      bgb$mxdate[i] = NA
+    }
+  }
+  bgb$n[i]=k$n[1]
+  if (i%%100==0) {
+    print(i)
+  }
+}
+```
+
+Only try to match names of people who collected a specimen and for which we have some sort of date. Also, remove the record without any name. For the floruit date, we assume a childhood period of 15 years, so we adjust the minimum date with that.
+
+```{r filterBGB}
+#only people who have collected specimens
+bgb2 = filter(bgb,n>0)
+
+#only those who have some sort of date
+bgb3 = filter(bgb2,is.na(date1)==F|
+                is.na(mndate)==F)
+bgb3 = filter(bgb3,is.na(LNAME)==F) #remove no collector specified
+
+#as numeric for calculations
+bgb3$date1 = as.numeric(bgb3$date1)
+bgb3$date2 = as.numeric(bgb3$date2)
+
+#add 15y margin for childhood
+bgb3$mndate2 = bgb3$mndate - 15
+```
+
+## Additional date info for Wikidata items
+
+The found Wikidata items without a year of birth are enriched with floruit dates inferred from publications authored by the people represented by these items. See `publications.R` to see how these dates were obtained.
+
+A floruit range of `date1` and `date2` is compiled based on the floruit dates or date ranges taken from the SPARQL query results and the dates inferred from publications.
+
+```{r addDate}
+#add date ranges to wikidata items based on floruit dates
+#if no year of birth is available
+allb.nd = filter(allb.names,is.na(yob))
+allb.nd$mndate = NA
+allb.nd$mxdate = NA
+
+#add floruit dates to wikidata items based on publications they authored
+pubst.uni = read_tsv("data/pub dates join.tsv")
+for (i in 1:dim(pubst.uni)[1]) {
+  allb.nd$mndate[allb.nd$id==pubst.uni$id[i]] = pubst.uni$mndate[i]
+  allb.nd$mxdate[allb.nd$id==pubst.uni$id[i]] = pubst.uni$mxdate[i]
+}
+
+#add range of the floruit date
+allb.nd$dur=NA
+for (i in 1:dim(allb.nd)[1]) {
+  if (is.na(allb.nd$mndate[i])==F&
+      is.na(allb.nd$mxdate[i])==F) {
+    allb.nd$dur[i] = as.numeric(allb.nd$mxdate[i]) - as.numeric(allb.nd$mndate[i])
+  }
+}
+
+#set date1 and date2 as the inferred floruit date range for a subset of names with no yob
+allb.md = filter(allb.nd,
+                 is.na(fly)==F|
+                   is.na(wyb)==F|
+                   is.na(wye)==F|
+                   is.na(mndate)==F)
+
+allb.md$date1 = allb.md$mndate
+allb.md$date2 = allb.md$mxdate
+for (i in 1:dim(allb.md)[1]) {
+  if (is.na(allb.md$fly[i])==F) {
+    allb.md$date1[i] = allb.md$fly[i]
+    allb.md$date2[i] = allb.md$fly[i]
+  }
+  if (is.na(allb.md$fly[i])) {
+    allb.md$date1[i] = allb.md$wyb[i]
+    allb.md$date2[i] = allb.md$wye[i]
+  }
+}
+
+```
+
+## Matching
+
+# Inititalize the matching
+
+```{r matchInit}
+bgb3$options = NA #possible labels that match, separated by pipe
+bgb3$lopt = NA #number of matches
+bgb3$wdid = NA #to put wikidata item ids, separated by pipes
+bgb3$score = "" #some sort of indicator how the matching happened
+
+##if using other source of data, ensure that:
+#o bgb3$fullname = full concatenated string of the name, in order from first to last name
+#can contain initials with dots
+#o bgb3$date1 = year of birth
+#o bgb3$date2 = year of death
+#o bgb3$LNAME = last name
+#o bgb3$FNAME = first name [optional]
+#o bgb3$MNAME = middle name(s) [optional]
+#o bgb3$mndate2 = earliest year a specimen was collected by this person (pref -15y to account for childhood)
+#o bgb3$mxdate = latest year a specimen was collected by this person
+#NA if not available
+```
+
+# Matching loop
+
+1. Exact matches
+This matching script first tries to identify any exact string matches between the full name and the full label. If multiple such matches are found, it adds an extra filter based on year of birth (e.g. fathers and sons with the same name). Either way, these matches are withheld.
+
+2. Fuzzy matches
+Here, the matchName function from above is applied. To streamline the fuzzy matches, a pre-filtering is done based on the dates of birth/death/floruit.
+
+2.1. Year of birth/death
+First, a matching attempt is made with those Wikidata items which have the exact same year of birth or death. If any records are found and the fuzzy matching is successful, the script skips to the next record immediately.
+
+2.2. If no birth/death match was found or the fuzzy matching was not successful, the script tries to filter the Wikidata floruit dates instead. The floruit dates need to realistically fit the lifespan indicated in the list of specimen collectors.
+
+2.3. If still no match is found, the inferred floruit range from the collected specimens is used to filter the Wikidata items based on their year of birth/death.
+
+Matching floruit dates on both sides was not implemented.
+
+```{r matchLoop}
+for (i in 1:dim(bgb3)[1]) {
+  #Exact matches
+  truem = filter(allb.names,itemLabel==bgb3$fullname[i])
+  #if more than one exact match, try to filter on birth date
+  if (dim(truem)[1]>1&is.na(bgb3$date1[i])==F) {
+    truem2 = filter(truem,yob==bgb3$date1[i]|is.na(yob))
+    if (dim(truem2)[1]>0) {
+      bgb3$lopt[i] = dim(truem2)[1]
+      bgb3$score[i] = paste0(bgb3$score[i],"Multiple Matches")
+      bgb3$options[i] = paste(truem2$itemLabel,collapse="|")
+      bgb3$wdid[i] = paste(truem2$id,collapse="|")
+      next
+    }
+  }
+  #Otherwise, just list the exact matches
+  if (dim(truem)[1]!=0) {
+    bgb3$lopt[i] = dim(truem)[1]
+    bgb3$score[i] = paste0(bgb3$score[i],"Single Match")
+    bgb3$options[i] = paste(truem$itemLabel,collapse="|")
+    bgb3$wdid[i] = paste(truem$id,collapse="|")
+    next
+  }
+  #if no exact name match, first try to find birth or death year matches
+  bgb3$score[i] = paste0(bgb3$score[i],"No Exact Match|")
+  yob = filter(allb.names,yob==bgb3$date1[i]|yod==bgb3$date2[i])
+  if (dim(yob)[1]>0) {
+    bgb3$score[i] = paste0(bgb3$score[i],"yob or yod Match|")
+    bgb3[i,c("lopt","options","wdid")] = matchName(yob,bgb3)
+    if (bgb3$options[i]!="") {
+      print(i)
+      next
+    }
+  }
+  #then try to match year of birth and death to wikidata items with floruit dates
+  #15 years to account for childhood
+  yob = allb.md
+  if (is.na(bgb$date1[i])==F) {
+    yob = filter(yob,date1>bgb3$date1[i]+15)
+  }
+  if (is.na(bgb$date2[i])==F) {
+    yob = filter(yob,date2<bgb3$date2[i])
+  }
+  if (dim(yob)[1]>0&dim(yob)[1]!=dim(allb.md)[1]) {
+    bgb3$score[i] = paste0(bgb3$score[i],"floruit Match WD|")
+    bgb3[i,c("lopt","options","wdid")] = matchName(yob,bgb3)
+    if (bgb3$options[i]!="") {
+      print(i)
+      next
+    }
+  }
+  #finally, compare wikidata year of birth and death to inferred floruit dates from specimens
+  #mndate2 already includes a 15y correction for childhood
+  if (is.na(bgb3$mndate2[i])==F) {
+    yob = filter(allb.names,is.na(yob)==F|is.na(yod)==F)
+    yob = filter(allb.names,is.na(yob)|yob<bgb3$mndate2[i])
+    yob = filter(yob,is.na(yod)|yod>bgb3$mxdate[i])
+    if (dim(yob)[1]>0) {
+      bgb3$score[i] = paste0(bgb3$score[i],"floruit match WD-BGB|")
+      bgb3[i,c("lopt","options","wdid")] = matchName(yob,bgb3)
+      print(i)
+    }
+  }
+}
+
+```
+
