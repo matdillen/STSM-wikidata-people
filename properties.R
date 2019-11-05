@@ -79,7 +79,7 @@ for (i in steps[-length(steps)]) {
   propu = httr::GET(url = paste0("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids=",
                                  tstp,
                                  "&format=json"),
-                    httr::user_agent("Matdillen"))
+                    httr::user_agent("insert_your_wiki_name_here_please"))
   props.r[[j]] = httr::content(propu,
                                type="application/json")
   print(j)
