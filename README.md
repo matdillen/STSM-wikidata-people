@@ -12,3 +12,7 @@ Glasgow in the context of the COST Mobilise action. Some working documents can s
 `properties.R` requests information from the Wikidata REST API for items or properties in batches of 50. It can provide info on labels, claims, references and more.
 
 `publications.R` sets up a large number of SPARQL queries to retrieve publication dates from articles authored by the Wikidata persons retrieved with queries in `collectormatching.Rmd`.
+
+# Data
+
+As part of this work, a series of SPARQL queries was performed in early October 2019 to list all possible Wikidata properties present in the set of Wikidata person records assembled with the SPARQL queries from `collectormatching.Rmd` and connected to specimen records from MeiseBG using the matching process of that R script. All properties are listed in `data/wikidataids.tsv` along with their frequency. The same list can still be found in a google sheet [here](https://docs.google.com/spreadsheets/d/175ya1JEoR1sb6Mqd74EKucC-vrm0BEvzYvCuG0IitzI/).
