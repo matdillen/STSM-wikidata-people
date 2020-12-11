@@ -1,0 +1,308 @@
+wikidata_id	n	label
+P586	2547	IPNI author ID
+P6264	1933	Harvard Index of Botanists ID
+P214	1546	VIAF ID
+P244	1181	Library of Congress authority ID
+P1006	1010	NTA ID
+P269	976	SUDOC authorities ID
+P227	912	GND ID
+P4081	860	BHL creator ID
+P648	604	Open Library ID
+P268	565	Bibliothèque nationale de France ID
+P646	497	Freebase ID
+P2163	455	FAST ID
+P1871	325	CERL ID
+P1207	322	NUKAT ID
+P3430	310	SNAC Ark ID
+P691	299	NKCR AUT ID
+P5370	255	Entomologists of the World ID
+P1315	224	National Library of Australia ID
+P3987	215	SHARE Catalogue author ID
+P1015	196	BIBSYS ID
+P3029	173	UK National Archives ID
+P906	158	SELIBR ID
+P2383	144	CTHS person ID
+P409	140	Libraries Australia ID
+P950	126	Biblioteca Nacional de España ID
+P2349	124	Stuttgart Database of Scientific Illustrators ID
+P6944	113	Bloodhound ID
+P949	110	National Library of Israel identifier
+P3762	103	openMLOL author ID
+P1415	98	Oxford Dictionary of National Biography ID
+P1280	93	CONOR ID
+P3807	85	S2A3 Biographical Database ID
+P1017	71	BAV ID
+P3222	71	NE.se ID
+P3413	69	Leopoldina member ID
+P1417	68	Encyclopædia Britannica Online ID
+P1273	67	CANTIC ID
+P2732	67	Persée author ID
+P1296	64	Gran Enciclopèdia Catalana ID
+P2006	63	ZooBank author ID
+P6194	60	Austrian Biographical Encylopedia ID
+P5375	59	BIU Santé person ID
+P2949	54	WikiTree person ID
+P6605	54	Plant Illustrations artist ID
+P1816	53	National Portrait Gallery (London) person ID
+P3348	53	National Library of Greece ID
+P2381	52	Academic Tree ID
+P349	50	National Diet Library Auth ID
+P5361	47	BNB person ID
+P1005	45	Portuguese National Library ID
+P4228	45	Encyclopedia of Australian Science ID
+P3544	44	Te Papa person ID
+P4629	44	Online Books Page author ID
+P1938	43	Project Gutenberg author ID
+P271	38	CiNii author ID (books)
+P640	35	Léonore ID
+P6821	34	Uppsala University Alvin ID
+P4823	33	American National Biography ID
+P496	32	ORCID iD
+P535	32	Find A Grave memorial ID
+P3154	29	Runeberg author ID
+P5374	29	Académie des sciences d'outre-mer member ID
+P245	27	ULAN ID
+P650	27	RKDartists ID
+P1580	26	University of Barcelona authority ID
+P1695	25	NLP ID (unique)
+P902	25	HDS ID
+P1907	24	Australian Dictionary of Biography ID
+P2924	23	Great Russian Encyclopedia Online ID
+P396	23	SBN author ID
+P3956	22	National Academy of Medicine (France) Member ID
+P2750	21	Photographers' Identities Catalog ID
+P6234	21	Biographie nationale de Belgique ID
+P723	21	DBNL author ID
+P2977	19	LBT person ID
+P3782	19	Artnet artist ID
+P6656	19	BHCL ID
+P2600	18	Geni.com profile ID
+P3065	18	RERO ID
+P551	18	residence
+P7349	18	Gazetteer for Scotland person ID
+P2454	17	KNAW past member ID
+P6844	17	abART person ID
+P4927	15	Invaluable.com person ID
+P2038	14	ResearchGate profile ID
+P3159	14	UGentMemorialis ID
+P3219	14	Encyclopædia Universalis ID
+P4491	14	Isidore ID
+P1263	13	NNDB people ID
+P5731	13	Angelicum author ID
+P1368	12	LNB ID
+P1430	12	OpenPlaques subject ID
+P2268	12	Musée d'Orsay artist ID
+P3051	12	Kindred Britain ID
+P2734	11	Unz Review author ID
+P4359	11	gravsted.dk ID
+P4459	11	Dictionary of Spanish Biography ID
+P4638	11	The Peerage person ID
+P4854	11	Uppslagsverket Finland ID
+P6231	11	BDEL ID
+P1153	10	Scopus Author ID
+P3365	10	Treccani ID
+P3429	10	Electronic Enlightenment ID
+P4223	10	Enciclopedia Italiana ID
+P6594	10	Guggenheim fellows ID
+P1899	9	LibriVox author ID
+P1960	9	Google Scholar author ID
+P6812	9	AntWiki article ID
+P1599	8	Cambridge Alumni Database ID
+P1607	8	Dialnet author ID
+P1670	8	Canadiana Authorities ID
+P2180	8	Kansallisbiografia ID
+P2862	8	Catalogus Professorum Academiae Rheno-Traiectinae ID
+P3603	8	Minneapolis Institute of Art constituent ID
+P4200	8	Christie's creator ID
+P4293	8	PM20 folder ID
+P4342	8	Store norske leksikon ID
+P6715	8	SIUSA ID
+P6878	8	Amburger database ID
+P3630	7	Babelio author ID
+P3946	7	Dictionary Grierson ID
+P5080	7	Norsk biografisk leksikon ID
+P5632	7	Persons of Indian Studies ID
+P6578	7	MutualArt artist ID
+P951	7	NSZL ID
+P1045	6	Sycomore ID
+P1233	6	ISFDB author ID
+P2843	6	Benezit ID
+P2861	6	Leidse Hoogleraren ID
+P2966	6	National Library of Wales Authority ID
+P3829	6	Publons author ID
+P3965	6	Bridgeman artist ID
+P1053	5	ResearcherID
+P1248	5	KulturNav-ID
+P1819	5	genealogics.org person ID
+P1977	5	Les Archives du Spectacle Person ID
+P2372	5	ODIS ID
+P2799	5	BVMC person ID
+P3191	5	IMIS person ID
+P3794	5	Dictionary of Sydney ID
+P3973	5	PIM authority ID
+P4759	5	Luminous-Lint ID
+P5329	5	ARMB member ID
+P6735	5	Watercolour World artist ID
+P1375	4	NSK ID
+P1707	4	DAAO ID
+P2342	4	AGORHA person/institution ID
+P2671	4	Google Knowledge Graph ID
+P2753	4	Dictionary of Canadian Biography ID
+P3360	4	Nobel Prize People Nomination ID
+P3409	4	Catalogus Professorum Lipsiensis ID
+P3411	4	Saxon Academy of Sciences member ID
+P345	4	IMDb ID
+P3788	4	BNA authority ID
+P4553	4	RA Collections ID
+P4574	4	Norwegian historical register of persons ID
+P5101	4	Swedish Literature Bank AuthorID
+P549	4	Mathematics Genealogy Project ID
+P6792	4	Find NZ Artists ID
+P6815	4	University of Amsterdam Album Academicum ID
+P7029	4	NLR ID (Russia)
+P7208	4	Liber Liber author ID
+P1341	3	Italian Chamber of Deputies dati ID
+P1367	3	Art UK artist ID
+P1741	3	GTAA ID
+P2070	3	Fellow of the Royal Society ID
+P2252	3	National Gallery of Art artist ID
+P3280	3	BanQ author ID
+P3417	3	Quora topic ID
+P4012	3	Semantic Scholar author ID
+P4169	3	YCBA agent ID
+P434	3	MusicBrainz artist ID
+P5395	3	Canadian Encyclopedia article ID
+P6023	3	ResearchGate contributor ID
+P6851	3	Biographical Dictionary of Iowa ID
+P1254	2	Slovenska biografija ID
+P1564	2	At the Circulating Library ID
+P1953	2	Discogs artist ID
+P2029	2	Dictionary of Ulster Biography ID
+P2191	2	NILF author ID
+P2273	2	Heidelberg Academy for Sciences and Humanities member ID
+P2287	2	CRIStin ID
+P2558	2	autores.uy ID
+P2605	2	ČSFD person ID
+P2639	2	Filmportal ID
+P2798	2	Loop ID
+P2886	2	Shakeosphere person ID
+P2941	2	Munk's Roll ID
+P3218	2	Auñamendi ID
+P3241	2	Catholic Encyclopedia ID
+P3325	2	student register of the University of Helsinki ID (1853–1899)
+P3954	2	Italian Senate ID
+P3960	2	Base biographique AUTOR ID
+P4104	2	Carnegie Hall agent ID
+P4159	2	WeRelate person ID
+P4255	2	Banglapedia (English version) ID
+P4619	2	National Library of Brazil ID
+P4749	2	Dictionnaire des auteurs luxembourgeois ID
+P4808	2	Royal Academy new identifier
+P5357	2	The Encyclopedia of Science Fiction ID
+P5390	2	Classiques des sciences sociales author ID
+P5468	2	Historia de la Medicina person ID
+P5739	2	PUSC author ID
+P5905	2	Comic Vine ID
+P5952	2	Annuaire de la magistrature ID
+P6174	2	TWAS Fellow ID
+P6235	2	ARB person ID
+P6300	2	Hymnary author ID
+P6722	2	FemBio ID
+P6907	2	BVLarramendi ID
+P7298	2	Auckland Museum ID
+P7311	2	Aozora Bunko author ID
+P839	2	IMSLP ID
+P866	2	Perlentaucher ID
+P947	2	RSL ID (person)
+P1157	1	US Congress Bio ID
+P1187	1	Dharma Drum Buddhist College person ID
+P1266	1	AlloCiné person ID
+P1309	1	EGAXA ID
+P1447	1	Sports-Reference.com Olympic athlete ID
+P1556	1	zbMATH author ID
+P1601	1	Esperantist ID
+P1648	1	Dictionary of Welsh Biography ID
+P1650	1	BBF ID
+P1788	1	DVN ID
+P1802	1	EMLO person ID
+P1807	1	Great Aragonese Encyclopedia ID
+P1902	1	Spotify artist ID
+P1908	1	CWGC person ID
+P2015	1	Hansard (1803–2005) ID
+P2018	1	Teuchos ID
+P2042	1	Artsy artist ID
+P2168	1	Swedish Film Database person ID
+P2401	1	Six Degrees of Francis Bacon ID
+P2418	1	Structurae person ID
+P2450	1	Encyclopædia Britannica contributor ID
+P2498	1	Catalan Biographical Dictionary of Women ID
+P2604	1	Kinopoisk person ID
+P2889	1	FamilySearch person ID
+P2940	1	Catalogus Professorum Rostochiensium ID
+P2944	1	Plarr ID
+P2963	1	Goodreads author ID
+P3074	1	Grace's Guide ID
+P3188	1	Nobel prize ID
+P3269	1	Fotografen.nl ID
+P3299	1	student register of the University of Helsinki ID (1640–1852)
+P3307	1	Galiciana Author ID
+P3368	1	Prabook ID
+P3372	1	Auckland Art Gallery artist ID
+P3475	1	SANU member ID
+P3595	1	BLF article ID
+P3835	1	Mendeley person ID
+P3887	1	KVAB member ID
+P3935	1	Chamber of Deputies of Italy storia ID
+P3997	1	Bait La Zemer Ha-Ivri artist ID
+P4145	1	Athenaeum person ID
+P4177	1	Finnish National Gallery artist ID
+P4285	1	Theses.fr person ID
+P4286	1	Nominis saint ID
+P4369	1	Cairn author ID
+P4590	1	Atomic Heritage Foundation ID
+P4613	1	Encyclopedia of Modern Ukraine ID
+P4687	1	Dictionnaire des peintres belges ID
+P4862	1	Amazon author ID
+P4872	1	GEPRIS person ID
+P4887	1	Web umenia creator ID
+P4891	1	Patrons de France ID
+P4928	1	Ricorso author ID
+P4992	1	DBA ID
+P5259	1	Swedish Gravestone ID
+P5306	1	LONSEA people ID
+P5333	1	Bérose ID
+P5341	1	Poetry Foundation ID
+P5372	1	Dictionnaire critique des historiens de l'art ID
+P5415	1	Whonamedit? doctor ID
+P5441	1	Herder Encyclopedia author ID
+P5459	1	RHE doctor ID
+P5469	1	Mormon Literature and Creative Arts Database artist ID
+P5489	1	artist-info artist ID
+P5491	1	BD Gest' author ID
+P5492	1	EDIT16 catalogue author ID
+P5508	1	archINFORM person or group ID
+P5516	1	Virtual Laboratory person ID
+P5528	1	Belgian Heritage in Brazil ID
+P5541	1	Paris Faculty of Science professor ID
+P5570	1	NooSFere author ID
+P5613	1	Bibliothèque de la Pléiade ID
+P5641	1	PRELIB person ID
+P5859	1	Adelphi author ID
+P5882	1	Muziekweb performer ID
+P6015	1	Handbook of Texas ID
+P6058	1	Larousse ID
+P6181	1	Disney A to Z ID
+P6282	1	French Academy of Sciences member ID
+P6284	1	NCpedia ID
+P6342	1	Dictionnaire des Wallons ID
+P6362	1	Litchfield Ledger ID
+P6404	1	Dizionario di Storia Treccani ID
+P6634	1	LinkedIn personal profile ID
+P6683	1	Alexander Turnbull Library Name ID
+P6734	1	Archaeology Data Service person ID
+P687	1	BHL Page ID
+P7077	1	Paris Foreign Missions Society ID
+P7142	1	Poincaré Papers person ID
+P7278	1	Peakbagger climber ID
+P7293	1	NLP ID (record)
+P781	1	SIKART ID
