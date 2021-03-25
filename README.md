@@ -16,3 +16,6 @@ Glasgow in the context of the COST Mobilise action. Some working documents can s
 # Data
 
 As part of this work, a series of SPARQL queries was performed in early October 2019 to list all possible Wikidata properties present in the set of Wikidata person records assembled with the SPARQL queries from `collectormatching.Rmd` and connected to specimen records from MeiseBG using the matching process of that R script. All properties are listed in `data/wikidataids.tsv` along with their frequency. The same list can still be found in a google sheet [here](https://docs.google.com/spreadsheets/d/175ya1JEoR1sb6Mqd74EKucC-vrm0BEvzYvCuG0IitzI/).
+
+# Methodology
+A more detailed description of this work can be found in the [5.4 deliverable report](https://doi.org/10.34960/ajxs-zr25) from the DiSSCo Prepare project. [Alternate link](https://www.dissco.eu/wp-content/uploads/DiSSCo-Prepare-D5.4-Semantic-Enhancement-w-doi.pdf).
